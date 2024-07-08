@@ -19,7 +19,6 @@ public class Task {
     @Column(nullable = false)
     private Integer id;
 
-    
     @Column(length = 16, nullable = false)
     private String name;
 
@@ -30,4 +29,37 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public TaskStatusEnum getStatus() {
+        return status;
+    }
+
+    public void setStatus(TaskStatusEnum status) {
+        this.status = status;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
 }
+
