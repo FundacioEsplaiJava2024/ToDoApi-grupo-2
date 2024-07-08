@@ -7,6 +7,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Table(name="tasks")
@@ -25,6 +27,7 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskStatusEnum status;
 
-    @Column
-    private String project_id;
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
 }
