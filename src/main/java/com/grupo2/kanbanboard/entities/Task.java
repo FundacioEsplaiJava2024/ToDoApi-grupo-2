@@ -22,9 +22,9 @@ public class Task {
     @Column(length = 16, nullable = false)
     private String name;
 
-    @Column(nullable = false, columnDefinition = "varchar(20) not null default 'PENDING'")
+    @Column(nullable = false, columnDefinition = "varchar(20) not null default 'toDoTasks'")
     @Enumerated(EnumType.STRING)
-    private TaskStatusEnum status;
+    private TaskStatusEnum taskStatus;
 
     @ManyToOne
     @JoinColumn(name = "project_id")
@@ -47,11 +47,11 @@ public class Task {
     }
 
     public TaskStatusEnum getStatus() {
-        return status;
+        return taskStatus;
     }
 
     public void setStatus(TaskStatusEnum status) {
-        this.status = status;
+        this.taskStatus = status;
     }
 
     public Project getProject() {
