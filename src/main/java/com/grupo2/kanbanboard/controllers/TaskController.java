@@ -13,12 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.grupo2.kanbanboard.entities.Project;
 import com.grupo2.kanbanboard.entities.Task;
-import com.grupo2.kanbanboard.requests.CreateProjectInput;
 import com.grupo2.kanbanboard.requests.CreateTaskInput;
-import com.grupo2.kanbanboard.requests.UpdateProjectInput;
-import com.grupo2.kanbanboard.services.ProjectService;
+import com.grupo2.kanbanboard.requests.UpdateTaskInput;
 import com.grupo2.kanbanboard.services.TaskService;
 
 @RestController
@@ -45,25 +42,25 @@ public class TaskController {
 
     @PatchMapping("/tasks/{id}")
     public ResponseEntity<Task> updateTask(@PathVariable int id,
-            @RequestBody UpdateTaskInput updateProjectInput) {
-        Optional<Project> optionalTask = projectService.findById(id);
+            @RequestBody UpdateTaskInput updateTaskInput) {
+        Optional<Task> optionalTask = taskService.findById(id);
 
         if (optionalTask.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        Project taskToUpdate = optionalTask.get();
+        Task taskToUpdate = optionalTask.get();
 
-        taskToUpdate.setProjectName(updateProjectInput.projectName());
+        taskToUpdate.setStatus(updateTaskInput.status());
 
-        Project taskUpdated = projectService.update(taskToUpdate);
+        Task taskUpdated = taskService.update(taskToUpdate);
 
         return new ResponseEntity<>(taskUpdated, HttpStatus.OK);
     }
 
     @DeleteMapping("/tasks/{id}")
     public ResponseEntity<Void> deleteTask(@PathVariable int id) {
-        projectService.delete(id);
+        taskService.delete(id);
 
         return ResponseEntity.noContent().build();
     }
