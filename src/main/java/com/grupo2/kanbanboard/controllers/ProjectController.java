@@ -27,39 +27,39 @@ public class ProjectController {
     }
 
     @PostMapping("/projects")
-    public ResponseEntity<Project> createTask(@RequestBody CreateProjectInput createProjectInput) {
-        Project taskCreated = projectService.create(createProjectInput.toProject());
+    public ResponseEntity<Project> createProject(@RequestBody CreateProjectInput createProjectInput) {
+        Project projectCreated = projectService.create(createProjectInput.toProject());
 
-        return new ResponseEntity<>(taskCreated, HttpStatus.CREATED);
+        return new ResponseEntity<>(projectCreated, HttpStatus.CREATED);
     }
 
     @GetMapping("/projects")
-    public ResponseEntity<List<Project>> allTasks() {
-        List<Project> tasks = projectService.findAll();
+    public ResponseEntity<List<Project>> allProjects() {
+        List<Project> projects = projectService.findAll();
 
-        return new ResponseEntity<>(tasks, HttpStatus.OK);
+        return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
-    @PatchMapping("/tasks/{id}")
-    public ResponseEntity<Project> updateTask(@PathVariable int id,
+    @PatchMapping("/projects/{id}")
+    public ResponseEntity<Project> updateProject(@PathVariable int id,
             @RequestBody UpdateProjectInput updateProjectInput) {
-        Optional<Project> optionalTask = projectService.findById(id);
+        Optional<Project> optionalProject = projectService.findById(id);
 
-        if (optionalTask.isEmpty()) {
+        if (optionalProject.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        Project taskToUpdate = optionalTask.get();
+        Project projectToUpdate = optionalProject.get();
 
-        taskToUpdate.setProjectName(updateProjectInput.projectName());
+        projectToUpdate.setProjectName(updateProjectInput.projectName());
 
-        Project taskUpdated = projectService.update(taskToUpdate);
+        Project projectUpdated = projectService.update(projectToUpdate);
 
-        return new ResponseEntity<>(taskUpdated, HttpStatus.OK);
+        return new ResponseEntity<>(projectUpdated, HttpStatus.OK);
     }
 
-    @DeleteMapping("/tasks/{id}")
-    public ResponseEntity<Void> deleteTask(@PathVariable int id) {
+    @DeleteMapping("/projects/{id}")
+    public ResponseEntity<Void> deleteProject(@PathVariable int id) {
         projectService.delete(id);
 
         return ResponseEntity.noContent().build();
