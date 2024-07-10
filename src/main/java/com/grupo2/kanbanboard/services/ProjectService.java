@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.grupo2.kanbanboard.entities.Project;
 import com.grupo2.kanbanboard.repositories.ProjectRepository;
+import com.grupo2.kanbanboard.requests.CreateProjectInput;
 
 @Service
 public class ProjectService {
@@ -17,8 +18,10 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public Project create(Project project) {
-        return projectRepository.save(project);
+    public Project create( CreateProjectInput projectName) {
+            Project project = new Project();
+            project.setProjectName(projectName.name());
+            return projectRepository.save(project);
     }
 
     public List<Project> findAll() {
