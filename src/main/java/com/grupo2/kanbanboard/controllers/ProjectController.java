@@ -50,7 +50,7 @@ public class ProjectController {
 
         Project projectToUpdate = optionalProject.get();
 
-        projectToUpdate.setProjectName(updateProjectInput.projectName());
+        projectToUpdate.setProjectName(updateProjectInput.name());
 
         Project projectUpdated = projectService.update(projectToUpdate);
 
