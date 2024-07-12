@@ -32,8 +32,8 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
-    public Task changeStatus (TaskStatusEnum taskStatus, Task task) {
-        task.setStatus(taskStatus);
+    public Task changeStatus (String taskStatus, Task task) {
+        task.setStatus(TaskStatusEnum.valueOf(taskStatus));
         return taskRepository.save(task);
     }
 
