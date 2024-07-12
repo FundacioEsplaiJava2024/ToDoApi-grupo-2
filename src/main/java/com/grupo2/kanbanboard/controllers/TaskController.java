@@ -2,10 +2,15 @@ package com.grupo2.kanbanboard.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.grupo2.kanbanboard.entities.Task;
+import com.grupo2.kanbanboard.entities.TaskStatusEnum;
+import com.grupo2.kanbanboard.requests.CreateTaskInput;
 import com.grupo2.kanbanboard.services.TaskService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class TaskController {
@@ -14,10 +19,14 @@ public class TaskController {
     public TaskController(TaskService taskService) {
         this.taskService = taskService;
     }
-    
+
     @PostMapping("/tasks")
-    public ResponseEntity<Task> createTasks(@RequestBody CreateTaskInput cre) {
-        return new String();
+    public ResponseEntity<?> createTasks(@RequestBody CreateTaskInput createTaskInput) {
+        if (createTaskInput.status() != "toDoTasks" || createTaskInput.status() != "doingTasks" || createTaskInput.status() != "doneTasks" ) {
+            return new ResponseEntity<>("Input a valid status.", HttpStatus.NOT_FOUND);
+        }
+        Task taskCreated = taskService.create(createTaskInput.name(), createTaskInput.projectId(), TaskStatusEnum.valueOf(createTaskInput.status()));
+        return new ResponseEntity<>(taskCreated, HttpStatus.CREATED);
     }
-    
+
 }
