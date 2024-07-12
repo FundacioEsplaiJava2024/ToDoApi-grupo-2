@@ -1,5 +1,7 @@
 package com.grupo2.kanbanboard.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -26,6 +28,7 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskStatusEnum taskStatus;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
