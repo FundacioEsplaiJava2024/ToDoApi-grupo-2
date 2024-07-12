@@ -40,7 +40,7 @@ public class TaskController {
     }
 
     @PatchMapping("tasks/{id}")
-    public ResponseEntity<Task> updateTask(@PathVariable int id,
+    public ResponseEntity<?> updateTask(@PathVariable int id,
             @RequestBody UpdateTaskInput updateTaskInput) {
         Optional<Task> optionalTask = taskService.findById(id);
 
@@ -50,8 +50,14 @@ public class TaskController {
 
         Task taskToUpdate = optionalTask.get();
 
-        Task taskUpdated = taskService.changeStatus(updateTaskInput.status(), taskToUpdate);
-        return new ResponseEntity<>(taskUpdated, HttpStatus.OK);
+        if (updateTaskInput.status().equals("toDoTasks") || updateTaskInput.status().equals("doingTasks")
+                || updateTaskInput.status().equals("doneTasks")) {
+            Task taskUpdated = taskService.changeStatus(updateTaskInput.status(), taskToUpdate);
+            return new ResponseEntity<>(taskUpdated, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>("Input a valid status.", HttpStatus.NOT_FOUND);
+
     }
 
     @DeleteMapping("/tasks/{id}")
