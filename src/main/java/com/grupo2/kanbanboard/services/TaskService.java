@@ -29,5 +29,6 @@ public class TaskService {
         Optional<Project> optionalProject = projectRepository.findById(idProject);  
         Project taskProject = optionalProject.get();
         task.setProject(taskProject);
+        return taskRepository.save(task);
     }
 }
