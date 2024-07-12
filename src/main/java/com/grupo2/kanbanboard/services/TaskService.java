@@ -31,4 +31,13 @@ public class TaskService {
         task.setProject(taskProject);
         return taskRepository.save(task);
     }
+
+    public Task changeStatus (TaskStatusEnum taskStatus, Task task) {
+        task.setStatus(taskStatus);
+        return taskRepository.save(task);
+    }
+
+    public void delete(int id) {
+        taskRepository.deleteById(id);
+    }
 }
