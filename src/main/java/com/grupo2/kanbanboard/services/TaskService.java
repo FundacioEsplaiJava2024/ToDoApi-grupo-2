@@ -1,6 +1,7 @@
 package com.grupo2.kanbanboard.services;
 
-import org.apache.el.stream.Optional;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.grupo2.kanbanboard.entities.Project;
@@ -22,13 +23,11 @@ public class TaskService {
     }
     
     public Task create (String TaskName, int idProject, TaskStatusEnum taskStatus) {
-
         Task task = new Task();
         task.setName(TaskName);
         task.setStatus(taskStatus);
         Optional<Project> optionalProject = projectRepository.findById(idProject);  
         Project taskProject = optionalProject.get();
         task.setProject(taskProject);
-
     }
 }
