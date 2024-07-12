@@ -28,15 +28,12 @@ public class TaskController {
 
     @PostMapping("/tasks")
     public ResponseEntity<?> createTasks(@RequestBody CreateTaskInput createTaskInput) {
-        if (createTaskInput.status().equals("toDoTasks") || createTaskInput.status().equals("doingTasks")
-                || createTaskInput.status().equals("doneTasks")) {
+        if (taskStatusIsValid(createTaskInput.status())) {
             Task taskCreated = taskService.create(createTaskInput.name(), createTaskInput.projectId(),
                     TaskStatusEnum.valueOf(createTaskInput.status()));
             return new ResponseEntity<>(taskCreated, HttpStatus.CREATED);
         }
-
         return new ResponseEntity<>("Input a valid status.", HttpStatus.NOT_FOUND);
-
     }
 
     @PatchMapping("tasks/{id}")
@@ -50,20 +47,24 @@ public class TaskController {
 
         Task taskToUpdate = optionalTask.get();
 
-        if (updateTaskInput.status().equals("toDoTasks") || updateTaskInput.status().equals("doingTasks")
-                || updateTaskInput.status().equals("doneTasks")) {
+        if (taskStatusIsValid(updateTaskInput.status())) {
             Task taskUpdated = taskService.changeStatus(updateTaskInput.status(), taskToUpdate);
             return new ResponseEntity<>(taskUpdated, HttpStatus.OK);
         }
-
         return new ResponseEntity<>("Input a valid status.", HttpStatus.NOT_FOUND);
-
     }
 
     @DeleteMapping("/tasks/{id}")
     public ResponseEntity<Void> deleteProject(@PathVariable int id) {
         taskService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    public boolean taskStatusIsValid(String status) {
+        if (status.equals("toDoTasks") || status.equals("doingTasks")
+                || status.equals("doneTasks"))
+            return true;
+        return false;
     }
 
 }
