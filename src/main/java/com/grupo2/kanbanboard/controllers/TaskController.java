@@ -28,13 +28,15 @@ public class TaskController {
 
     @PostMapping("/tasks")
     public ResponseEntity<?> createTasks(@RequestBody CreateTaskInput createTaskInput) {
-        if (createTaskInput.status() != "toDoTasks" || createTaskInput.status() != "doingTasks"
-                || createTaskInput.status() != "doneTasks") {
-            return new ResponseEntity<>("Input a valid status.", HttpStatus.NOT_FOUND);
+        if (createTaskInput.status().equals("toDoTasks") || createTaskInput.status().equals("doingTasks")
+                || createTaskInput.status().equals("doneTasks")) {
+            Task taskCreated = taskService.create(createTaskInput.name(), createTaskInput.projectId(),
+                    TaskStatusEnum.valueOf(createTaskInput.status()));
+            return new ResponseEntity<>(taskCreated, HttpStatus.CREATED);
         }
-        Task taskCreated = taskService.create(createTaskInput.name(), createTaskInput.projectId(),
-                TaskStatusEnum.valueOf(createTaskInput.status()));
-        return new ResponseEntity<>(taskCreated, HttpStatus.CREATED);
+
+        return new ResponseEntity<>("Input a valid status.", HttpStatus.NOT_FOUND);
+
     }
 
     @PatchMapping("tasks/{id}")
