@@ -40,4 +40,9 @@ public class TaskService {
     public void delete(int id) {
         taskRepository.deleteById(id);
     }
+
+    public Optional<Task> findById(int id) {
+        return taskRepository.findById(id);
+    }
+
 }
