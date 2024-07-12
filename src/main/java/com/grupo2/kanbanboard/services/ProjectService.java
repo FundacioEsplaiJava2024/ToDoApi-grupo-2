@@ -35,7 +35,7 @@ public class ProjectService {
         return projectRepository.findById(id);
     }
 
-    public Project update(Project projectToUpdate) {
+    public Project save(Project projectToUpdate) {
         return projectRepository.save(projectToUpdate);
     }
 

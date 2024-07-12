@@ -52,7 +52,7 @@ public class ProjectController {
 
         projectToUpdate.setProjectName(updateProjectInput.name());
 
-        Project projectUpdated = projectService.update(projectToUpdate);
+        Project projectUpdated = projectService.save(projectToUpdate);
 
         return new ResponseEntity<>(projectUpdated, HttpStatus.OK);
     }
