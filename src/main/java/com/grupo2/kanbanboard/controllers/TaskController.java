@@ -2,11 +2,13 @@ package com.grupo2.kanbanboard.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.grupo2.kanbanboard.entities.Project;
 import com.grupo2.kanbanboard.entities.Task;
 import com.grupo2.kanbanboard.entities.TaskStatusEnum;
 import com.grupo2.kanbanboard.requests.CreateTaskInput;
 import com.grupo2.kanbanboard.requests.UpdateTaskInput;
 import com.grupo2.kanbanboard.services.TaskService;
+import com.grupo2.kanbanboard.services.ProjectService;
 
 import java.util.Optional;
 
@@ -21,13 +23,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 public class TaskController {
     public TaskService taskService;
+    public ProjectService projectService;
 
-    public TaskController(TaskService taskService) {
+
+    public TaskController(TaskService taskService, ProjectService projectService) {
         this.taskService = taskService;
+        this.projectService = projectService;
     }
 
     @PostMapping("/tasks")
     public ResponseEntity<?> createTasks(@RequestBody CreateTaskInput createTaskInput) {
+        Optional<Project> optionalProject = projectService.findById(createTaskInput.projectId());
+        if (optionalProject.isEmpty()) {
+            return new ResponseEntity<>("Project does not exist.", HttpStatus.NOT_FOUND);
+        }
+
         if (taskStatusIsValid(createTaskInput.status())) {
             Task taskCreated = taskService.create(createTaskInput.name(), createTaskInput.projectId(),
                     TaskStatusEnum.valueOf(createTaskInput.status()));
