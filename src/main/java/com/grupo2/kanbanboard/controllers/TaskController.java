@@ -43,7 +43,7 @@ public class TaskController {
                     TaskStatusEnum.valueOf(createTaskInput.status()));
             return new ResponseEntity<>(taskCreated, HttpStatus.CREATED);
         }
-        return new ResponseEntity<>("Input a valid status.", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Input a valid status.", HttpStatus.BAD_REQUEST);
     }
 
     @PatchMapping("tasks/{id}")
@@ -61,7 +61,7 @@ public class TaskController {
             Task taskUpdated = taskService.changeStatus(updateTaskInput.status(), taskToUpdate);
             return new ResponseEntity<>(taskUpdated, HttpStatus.OK);
         }
-        return new ResponseEntity<>("Input a valid status.", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Input a valid status.", HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/tasks/{id}")
