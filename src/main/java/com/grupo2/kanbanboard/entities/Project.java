@@ -23,7 +23,7 @@ public class Project {
     @Column(length = 16, nullable = false)
     private String projectName;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch=FetchType.EAGER, orphanRemoval = true)
     private List<Task> tasks;
 
     public Integer getId() {
