@@ -3,6 +3,7 @@ package com.grupo2.kanbanboard.services;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.grupo2.kanbanboard.entities.Project;
 import com.grupo2.kanbanboard.entities.Task;
@@ -37,8 +38,17 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
-    public void delete(int id) {
-        taskRepository.deleteById(id);
+    @Transactional
+    public void delete(int taskId) {
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
+
+        Project project = task.getProject();
+        if (project != null) {
+            project.dismissTask(task);  
+            projectRepository.save(project);  
+        }
+
+        taskRepository.delete(task);  
     }
 
     public Optional<Task> findById(int id) {

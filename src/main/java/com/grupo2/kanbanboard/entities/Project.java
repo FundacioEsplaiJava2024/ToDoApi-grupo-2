@@ -28,11 +28,7 @@ public class Project {
 
     public void dismissTask(Task task) {
         this.tasks.remove(task);
-    }
-
-    public void dismissTasks() {
-       this.tasks.forEach(child -> child.dismissParent()); 
-       this.tasks.clear();
+        task.setProject(null); 
     }
 
     public Integer getId() {
