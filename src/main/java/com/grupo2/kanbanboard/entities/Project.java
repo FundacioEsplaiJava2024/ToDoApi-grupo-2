@@ -12,7 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-@Table(name="projects")
+@Table(name = "projects")
 @Entity
 public class Project {
     @Id
@@ -23,8 +23,13 @@ public class Project {
     @Column(length = 16, nullable = false)
     private String projectName;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Task> tasks;
+
+    public void dismissTask(Task task) {
+        this.tasks.remove(task);
+        task.setProject(null); 
+    }
 
     public Integer getId() {
         return id;
