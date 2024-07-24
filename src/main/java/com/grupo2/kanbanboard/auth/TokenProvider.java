@@ -15,7 +15,7 @@ import com.grupo2.kanbanboard.entities.User;
 
 @Service
 public class TokenProvider {
-  @Value("${security.jwt.token.secret-key}")
+  @Value("grupo2secret")
   private String JWT_SECRET;
 
   public String generateAccessToken(User user) {
