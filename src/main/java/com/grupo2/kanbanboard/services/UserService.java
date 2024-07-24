@@ -13,11 +13,12 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User create(String email, String username, String password){
+    public User create(String email, String username, String password) {
         User user = new User();
         user.setEmail(email);
         user.setUsername(username);
         user.setPassword(password);
         return userRepository.save(user);
     }
+
 }
