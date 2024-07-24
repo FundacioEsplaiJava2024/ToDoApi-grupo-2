@@ -58,7 +58,13 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+	
+   <dependency>
+     <groupId>net.eulerframework</groupId>
+     <artifactId>euler-common-jwt</artifactId>
+     <version>0.0.7</version>
+   </dependency>
+ </dependencies>
 
 	<build>
 		<plugins>
