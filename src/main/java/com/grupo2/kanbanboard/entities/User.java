@@ -23,7 +23,7 @@ public class User {
     private Integer id;
 
     @Column(nullable = false, length = 15, unique = true)
-    private Integer username;
+    private String username;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -45,7 +45,7 @@ public class User {
         this.id = id;
     }
 
-    public void setUsername(Integer username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -53,7 +53,7 @@ public class User {
         return id;
     }
 
-    public Integer getUsername() {
+    public String getUsername() {
         return username;
     }
 
