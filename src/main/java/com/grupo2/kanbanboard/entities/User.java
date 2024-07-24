@@ -1,6 +1,10 @@
 package com.grupo2.kanbanboard.entities;
 
+import java.util.Collection;
 import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -16,17 +20,14 @@ import jakarta.persistence.Table;
 
 @Table(name = "users")
 @Entity
-public class User {
+public class User implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
     private Integer id;
 
-    @Column(nullable = false, length = 15, unique = true)
-    private String username;
-
     @Column(nullable = false, unique = true)
-    private String email;
+    private String login;
 
     @JsonIgnore
     @Column(nullable = false)
@@ -36,13 +37,45 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Project> projects;
 
-    public void dismissProject(Project project) {
-        this.projects.remove(project);
-        project.setUser(null);
+    @Override
+    public String getUsername() {
+      return login;
+    }
+  
+    @Override
+    public boolean isAccountNonExpired() {
+      return true;
+    }
+  
+    @Override
+    public boolean isAccountNonLocked() {
+      return true;
+    }
+  
+    @Override
+    public boolean isCredentialsNonExpired() {
+      return true;
+    }
+  
+    @Override
+    public boolean isEnabled() {
+      return true;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getPassword() {
@@ -53,23 +86,10 @@ public class User {
         this.password = password;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("No roles created.");
     }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+  
 }
