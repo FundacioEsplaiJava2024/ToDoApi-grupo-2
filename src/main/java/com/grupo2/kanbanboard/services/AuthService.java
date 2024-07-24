@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.grupo2.kanbanboard.entities.User;
 import com.grupo2.kanbanboard.repositories.UserRepository;
-import com.grupo2.kanbanboard.requests.LoginInput;
+import com.grupo2.kanbanboard.requests.RegisterInput;
 
 import net.eulerframework.common.util.jwt.InvalidJwtException;
 
@@ -24,7 +24,7 @@ public class AuthService implements UserDetailsService {
     return user;
   }
 
-  public UserDetails signUp(LoginInput data) throws InvalidJwtException {
+  public UserDetails signUp(RegisterInput data) throws InvalidJwtException {
     if (repository.findByLogin(data.login()) != null) {
       throw new InvalidJwtException("Username already exists");
     }
