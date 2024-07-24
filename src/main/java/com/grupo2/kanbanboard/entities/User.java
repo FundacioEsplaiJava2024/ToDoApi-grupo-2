@@ -29,6 +29,10 @@ public class User {
     private String email;
 
     @JsonIgnore
+    @Column(nullable = false)
+    private String password;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Project> projects;
 
