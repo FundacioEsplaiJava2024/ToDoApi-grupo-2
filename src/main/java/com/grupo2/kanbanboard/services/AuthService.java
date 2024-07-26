@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.grupo2.kanbanboard.entities.User;
+import com.grupo2.kanbanboard.entities.UserRoleEnum;
 import com.grupo2.kanbanboard.repositories.UserRepository;
 import com.grupo2.kanbanboard.requests.RegisterInput;
 
@@ -29,9 +30,7 @@ public class AuthService implements UserDetailsService {
       throw new InvalidJwtException("Username already exists");
     }
     String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-    User newUser = new User();
-    newUser.setLogin(data.login());
-    newUser.setPassword(encryptedPassword);
+    User newUser = new User(data.login(), encryptedPassword, UserRoleEnum.USER);
     return repository.save(newUser);
   }
 }
