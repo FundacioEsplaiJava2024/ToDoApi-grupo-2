@@ -17,16 +17,20 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.grupo2.kanbanboard.entities.Project;
+import com.grupo2.kanbanboard.entities.User;
 import com.grupo2.kanbanboard.requests.CreateProjectInput;
 import com.grupo2.kanbanboard.requests.UpdateProjectInput;
+import com.grupo2.kanbanboard.services.AuthService;
 import com.grupo2.kanbanboard.services.ProjectService;
 
 @RestController
 public class ProjectController {
     public ProjectService projectService;
+    public AuthService authService;
 
-    public ProjectController(ProjectService projectService) {
+    public ProjectController(ProjectService projectService, AuthService authService) {
         this.projectService = projectService;
+        this.authService = authService;
     }
 
     @PostMapping("/projects")
@@ -42,10 +46,10 @@ public class ProjectController {
             @RequestHeader(name = "authorization", required = true) String accessToken) throws Exception {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String username = authentication.getName();
-            List<Project> projects = projectService.getUserProjects(username);
-
-            return new ResponseEntity<List<Project>>(projects, HttpStatus.OK);
+            String login = authentication.getName();
+            var user = authService.loadUserByUsername(login);
+            User rUser = (User) user;
+            return new ResponseEntity<List<Project>>(rUser.getProjects(), HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }

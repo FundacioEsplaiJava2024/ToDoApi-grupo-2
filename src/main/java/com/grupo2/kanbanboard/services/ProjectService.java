@@ -32,7 +32,7 @@ public class ProjectService {
     public List<Project> getUserProjects(String username) {
         UserDetails user = userService.loadUserByUsername(username);
         User rUser = (User) user;
-        List<Project> projects = projectRepository.findByUserId(rUser.getId());
+        List<Project> projects = rUser.getProjects();
         return projects;
     }
 
