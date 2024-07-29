@@ -38,12 +38,18 @@ public class ProjectController {
     }
 
     @GetMapping("/projects")
-    public ResponseEntity<List<Project>> userProjects(@RequestHeader(name = "authorization", required = true)String accessToken) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-        List<Project> projects = projectService.getUserProjects(username);
+    public ResponseEntity<?> userProjects(
+            @RequestHeader(name = "authorization", required = true) String accessToken) throws Exception {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String username = authentication.getName();
+            List<Project> projects = projectService.getUserProjects(username);
 
-        return new ResponseEntity<>(projects, HttpStatus.OK);
+            return new ResponseEntity<List<Project>>(projects, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
+
     }
 
     @PatchMapping("/projects/{id}")
