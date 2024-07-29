@@ -29,6 +29,9 @@ public class User implements UserDetails {
   @Column(nullable = false)
   private Integer id;
 
+  public User() {
+  }
+
   @Column(nullable = false, unique = true)
   private String login;
 
