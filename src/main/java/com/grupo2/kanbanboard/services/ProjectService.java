@@ -4,23 +4,33 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.grupo2.kanbanboard.entities.Project;
+import com.grupo2.kanbanboard.entities.User;
 import com.grupo2.kanbanboard.repositories.ProjectRepository;
 
 @Service
 public class ProjectService {
     private final ProjectRepository projectRepository;
+    public AuthService userService;
 
     public ProjectService(ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
     }
 
-    public Project create( String projectName) {
-            Project project = new Project();
-            project.setProjectName(projectName);
-            return projectRepository.save(project);
+    public Project create(String projectName) {
+        Project project = new Project();
+        project.setProjectName(projectName);
+        return projectRepository.save(project);
+    }
+
+    public List<Project> getUserProjects(String username) {
+        UserDetails user = userService.loadUserByUsername(username);
+        User rUser = (User) user;
+        List<Project> projects = projectRepository.findByUserId(rUser.getId());
+        return projects;
     }
 
     public List<Project> findAll() {
@@ -42,4 +52,3 @@ public class ProjectService {
         projectRepository.deleteById(id);
     }
 }
-

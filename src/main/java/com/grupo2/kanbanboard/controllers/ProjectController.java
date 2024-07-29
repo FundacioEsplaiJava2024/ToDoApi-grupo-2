@@ -3,14 +3,17 @@ package com.grupo2.kanbanboard.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.grupo2.kanbanboard.entities.Project;
@@ -33,8 +36,10 @@ public class ProjectController {
     }
 
     @GetMapping("/projects")
-    public ResponseEntity<List<Project>> allProjects() {
-        List<Project> projects = projectService.findAll();
+    public ResponseEntity<List<Project>> userProjects(@RequestHeader(name = "authorization", required = true)String accessToken) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        List<Project> projects = projectService.getUserProjects(username);
 
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }
