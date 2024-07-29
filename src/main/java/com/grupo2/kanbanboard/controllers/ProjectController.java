@@ -31,7 +31,9 @@ public class ProjectController {
 
     @PostMapping("/projects")
     public ResponseEntity<Project> createProject(@RequestBody CreateProjectInput createProjectInput) {
-        Project projectCreated = projectService.create(createProjectInput.name());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String login = authentication.getName();
+        Project projectCreated = projectService.create(createProjectInput.name(), login);
         return new ResponseEntity<>(projectCreated, HttpStatus.CREATED);
     }
 

@@ -20,9 +20,12 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public Project create(String projectName) {
+    public Project create(String projectName, String login) {
         Project project = new Project();
         project.setProjectName(projectName);
+        UserDetails user = userService.loadUserByUsername(login);
+        User rUser = (User) user;
+        project.setUser(rUser);
         return projectRepository.save(project);
     }
 
