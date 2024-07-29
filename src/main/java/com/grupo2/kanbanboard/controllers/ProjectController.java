@@ -34,11 +34,15 @@ public class ProjectController {
     }
 
     @PostMapping("/projects")
-    public ResponseEntity<Project> createProject(@RequestBody CreateProjectInput createProjectInput) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String login = authentication.getName();
-        Project projectCreated = projectService.create(createProjectInput.name(), login);
-        return new ResponseEntity<>(projectCreated, HttpStatus.CREATED);
+    public ResponseEntity<?> createProject(@RequestBody CreateProjectInput createProjectInput) throws Exception {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String login = authentication.getName();
+            Project projectCreated = projectService.create(createProjectInput.name(), login);
+            return new ResponseEntity<>(projectCreated, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
     }
 
     @GetMapping("/projects")

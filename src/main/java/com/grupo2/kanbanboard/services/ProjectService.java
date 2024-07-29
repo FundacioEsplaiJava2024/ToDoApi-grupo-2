@@ -16,8 +16,9 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     public AuthService userService;
 
-    public ProjectService(ProjectRepository projectRepository) {
+    public ProjectService(ProjectRepository projectRepository, AuthService authService) {
         this.projectRepository = projectRepository;
+        this.userService = authService;
     }
 
     public Project create(String projectName, String login) {
