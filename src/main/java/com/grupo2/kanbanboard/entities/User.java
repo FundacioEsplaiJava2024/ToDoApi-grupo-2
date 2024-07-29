@@ -29,9 +29,6 @@ public class User implements UserDetails {
   @Column(nullable = false)
   private Integer id;
 
-  public User() {
-  }
-
   @Column(nullable = false, unique = true)
   private String login;
 
@@ -50,6 +47,9 @@ public class User implements UserDetails {
     this.login = login;
     this.password = password;
     this.role = role;
+  }
+  
+  public User() {
   }
 
   @Override
