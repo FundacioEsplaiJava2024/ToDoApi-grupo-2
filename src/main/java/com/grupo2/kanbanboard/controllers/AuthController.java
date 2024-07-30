@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.grupo2.kanbanboard.requests.AccessTokenInput;
+import com.grupo2.kanbanboard.requests.AccessTokenDTO;
 import com.grupo2.kanbanboard.requests.LoginInput;
 import com.grupo2.kanbanboard.requests.RegisterInput;
 import com.grupo2.kanbanboard.services.AuthService;
@@ -31,7 +31,7 @@ public class AuthController {
   public ResponseEntity<?> signIn(@RequestBody LoginInput data) throws AuthenticationException {
     try {
       var accessToken = service.signIn(data.login(), data.password());
-      return ResponseEntity.ok(new AccessTokenInput(accessToken));
+      return ResponseEntity.ok(new AccessTokenDTO(accessToken));
     } catch (AuthenticationException ex) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials.");
     }
